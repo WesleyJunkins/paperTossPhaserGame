@@ -41,19 +41,23 @@ function create(){
 
     var canDrag = this.matter.world.nextGroup();
 
-    this.matter.add.image(400, 500, 'ball', null, { chamfer: 16 }).setScale(0.5).setBounce(0.9).setCollisionGroup(canDrag);
+    this.matter.add.sprite(400, 500, 'ball', null, { chamfer: 16 }).setScale(0.5).setBounce(0.9).setCollisionGroup(canDrag);
 
     this.matter.add.mouseSpring({length: 1, stiffness: 0.6, collisionFilter: {group: canDrag}});
 
-    this.matter.add.image(580, 520, 'trashCan').setScale(1.7).setStatic(true);
+    this.matter.add.sprite(580, 520, 'trashCan').setScale(1.7).setStatic(true);
 
-    this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
+    //let ball = this.add.sprite(600, 600, 'ball');
 
-        console.log("Hit");
-        // bodyA.gameObject.setTint(0xff0000);
-        // bodyB.gameObject.setTint(0x00ff00);
+    //this.physics.arcade.add.collider('ball', 'trashCan');
 
-    });
+    // this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
+
+    //     console.log("Hit");
+    //     // bodyA.gameObject.setTint(0xff0000);
+    //     // bodyB.gameObject.setTint(0x00ff00);
+
+    // });
 
 
 
@@ -67,6 +71,7 @@ function create(){
 }
 
 function update() {
+    //this.physics.arcade.collide('ball', 'trashCan');
 
 }
 
