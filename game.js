@@ -1,3 +1,180 @@
+//MATTERjs VERSION
+var config = {
+    type: Phaser.AUTO,
+    width: 1000,
+    height: 700,
+    physics: {
+        default: 'matter',
+        arcade: {
+            debug: true,
+            gravity: {y: 5}
+        },
+        matter: {
+            debug: true,
+            gravity: {y: 2}
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+new Phaser.Game(config);
+
+var score = 0;
+
+function preload () {
+    this.load.image('background', 'assets/background.png');
+    this.load.image('trashCan', 'assets/trashCan.png');
+    this.load.image('ball', 'assets/cannonBall.png');
+}
+
+function create() {
+    this.add.image(400, 300, 'background');
+
+    this.matter.world.setBounds();
+
+    var canDrag = this.matter.world.nextGroup();
+
+    var ball = this.matter.add.sprite(400, 500, 'ball', null, { chamfer: 16 });
+        ball.setCircle();
+        ball.setScale(0.5);
+        ball.setBounce(0.3);
+        ball.setCollisionGroup(canDrag);
+        ball.setIgnoreGravity(true);
+
+    this.matter.add.mouseSpring({length: 1, stiffness: 0.9, collisionFilter: {group: canDrag}});
+
+    this.matter.add.sprite(580, 520, 'trashCan').setScale(2).setStatic(true);
+
+    scoreboard = this.add.text(450, 10, 'Score: '+score);
+
+    this.input.on('pointerdown', function(pointer){
+        ball.setIgnoreGravity(false);
+    })
+
+    this.matter.world.on('collisionactive', function (event, bodyA, bodyB) {
+        if((ball.x >= 559.906)&&(ball.x <= 607.649)&&(ball.y >= 453)&&(ball.y <= 458))
+        {
+            ball.setX(400);
+            ball.setY(500);
+            ball.setIgnoreGravity(true);
+            ball.setVelocity(0);
+            score = score + 1;
+            scoreboard.setText('Score: '+score);
+            //Find some way to reset everything here, add 1 to score, and put the ball back
+            //In its starting position. Also, maybe make it so that the ball doesn't just fall
+            //to the ground when the game starts, and instead waits at a certain position until
+            //the pointer is clicked to drag and throw the ball.
+        }
+        else if((ball.x >= 650.0) || (ball.y >= 680.0))
+        {
+            ball.setX(400);
+            ball.setY(500);
+            ball.setIgnoreGravity(true);
+            ball.setVelocity(0);
+        }
+    });
+
+}
+
+function update() {
+    scoreboard.setText("Score: "+score);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ARCADE VERSION
 // var config = {
 //     type: Phaser.AUTO,
@@ -112,86 +289,6 @@
 
 
 
-//MATTERjs VERSION
-var config = {
-    type: Phaser.AUTO,
-    width: 1000,
-    height: 700,
-    physics: {
-        default: 'matter',
-        arcade: {
-            debug: true,
-            gravity: {y: 5}
-        },
-        matter: {
-            debug: true,
-            gravity: {y: 2}
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};
-
-new Phaser.Game(config);
-
-var score = 0;
-
-function preload () {
-    this.load.image('background', 'assets/background.png');
-    this.load.image('trashCan', 'assets/trashCan.png');
-    this.load.image('ball', 'assets/cannonBall.png');
-}
-
-function create() {
-    this.add.image(400, 300, 'background');
-
-    this.matter.world.setBounds();
-
-    var canDrag = this.matter.world.nextGroup();
-
-    var ball = this.matter.add.sprite(400, 500, 'ball', null, { chamfer: 16 });
-        ball.setCircle();
-        ball.setScale(0.5);
-        ball.setBounce(0.3);
-        ball.setCollisionGroup(canDrag);
-
-    this.matter.add.mouseSpring({length: 1, stiffness: 0.9, collisionFilter: {group: canDrag}});
-
-    this.matter.add.sprite(580, 520, 'trashCan').setScale(2).setStatic(true);
-
-    this.matter.world.on('collisionactive', function (event, bodyA, bodyB) {
-
-        //console.log("Hit");
-        //console.log(bodyA.label + " collides with " + bodyB.label);
-        score = score + 1;
-        if((ball.x >= 559.906)&&(ball.x <= 607.649)&&(ball.y >= 453)&&(ball.y <= 458))
-        {
-            //Find some way to reset everything here, add 1 to score, and put the ball back
-            //In its starting position. Also, maybe make it so that the ball doesn't just fall
-            //to the ground when the game starts, and instead waits at a certain position until
-            //the pointer is clicked to drag and throw the ball.
-            console.log(ball);
-        }
-        //console.log(ball.y);
-        //console.log(score);
-        
-        // bodyA.gameObject.setTint(0xff0000);
-        // bodyB.gameObject.setTint(0x00ff00);
-
-    });
-
-}
-
-function update() {
-    // if(this.ball.x === 454.550)
-    // {
-    //     console.log("Hey");
-    // }
-    
-}
 
 
 
