@@ -29,6 +29,7 @@ function preload () {
     this.load.image('background', 'assets/background.png');
     this.load.image('trashCan', 'assets/trashCan.png');
     this.load.image('ball', 'assets/cannonBall.png');
+    this.load.image('red', 'assets/red.png')
 }
 
 function create() {
@@ -38,7 +39,7 @@ function create() {
 
     var canDrag = this.matter.world.nextGroup();
 
-    var ball = this.matter.add.sprite(400, 500, 'ball', null, { chamfer: 16 });
+    var ball = this.matter.add.sprite(400, 0, 'ball', null, { chamfer: 16 });
         ball.setCircle();
         ball.setScale(0.5);
         ball.setBounce(0.3);
@@ -47,32 +48,43 @@ function create() {
 
     this.matter.add.mouseSpring({length: 1, stiffness: 0.9, collisionFilter: {group: canDrag}});
 
-    this.matter.add.sprite(580, 520, 'trashCan').setScale(2).setStatic(true);
+    trashCan = this.matter.add.sprite(580, 520, 'trashCan').setScale(2).setStatic(true);
 
     scoreboard = this.add.text(450, 10, 'Score: '+score);
+
+    var particles = this.add.particles('red');
 
     this.input.on('pointerdown', function(pointer){
         ball.setIgnoreGravity(false);
     })
 
     this.matter.world.on('collisionactive', function (event, bodyA, bodyB) {
-        if((ball.x >= 559.906)&&(ball.x <= 607.649)&&(ball.y >= 453)&&(ball.y <= 458))
+        if((ball.x >= 553.906)&&(ball.x <= 617.649)&&(ball.y >= 445)&&(ball.y <= 465))
         {
             ball.setX(400);
-            ball.setY(500);
+            ball.setY(650);
             ball.setIgnoreGravity(true);
             ball.setVelocity(0);
+            var emitter = particles.createEmitter({
+                speed: 100,
+                scale: { start: 1, end: 0 },
+                blendMode: 'ADD'
+            });
+            particles.setX(580);
+            particles.setY(520);
+            emitter.emitParticle();
+            emitter.emitParticle();
+            emitter.emitParticle();
+            emitter.emitParticle();
+            emitter.emitParticle();
+            emitter.startFollow(trashCan);
             score = score + 1;
             scoreboard.setText('Score: '+score);
-            //Find some way to reset everything here, add 1 to score, and put the ball back
-            //In its starting position. Also, maybe make it so that the ball doesn't just fall
-            //to the ground when the game starts, and instead waits at a certain position until
-            //the pointer is clicked to drag and throw the ball.
         }
-        else if((ball.x >= 650.0) || (ball.y >= 680.0))
+        else
         {
             ball.setX(400);
-            ball.setY(500);
+            ball.setY(650);
             ball.setIgnoreGravity(true);
             ball.setVelocity(0);
         }
@@ -130,7 +142,13 @@ function update() {
 
 
 
-
+        // else if((ball.x >= 650.0) || (ball.y >= 680.0))
+        // {
+        //     ball.setX(400);
+        //     ball.setY(500);
+        //     ball.setIgnoreGravity(true);
+        //     ball.setVelocity(0);
+        // }
 
 
 
